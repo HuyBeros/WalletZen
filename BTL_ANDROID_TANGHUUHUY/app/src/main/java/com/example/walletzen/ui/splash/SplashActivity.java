@@ -3,7 +3,6 @@ package com.example.walletzen.ui.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import com.example.walletzen.ui.home.HomeActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,15 +23,14 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(
                     new Intent(
                             SplashActivity.this,
-//                            LoginActivity.class
-                            HomeActivity.class
+                            LoginActivity.class
                     )
-
             );
 
             finish();
 
-        },2000);
+        }, 2000);
 
     }
+
 }

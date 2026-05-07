@@ -49,6 +49,12 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
+        Toast.makeText(
+                this,
+                "Home Opened",
+                Toast.LENGTH_LONG
+        ).show();
+
         rvTransaction = findViewById(R.id.rvTransaction);
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
@@ -87,8 +93,6 @@ public class HomeActivity extends AppCompatActivity {
                         )
                 );
 
-                overridePendingTransition(0,0);
-
                 return true;
 
             } else if(item.getItemId() == R.id.nav_profile){
@@ -99,8 +103,6 @@ public class HomeActivity extends AppCompatActivity {
                                 ProfileActivity.class
                         )
                 );
-
-                overridePendingTransition(0,0);
 
                 return true;
             }
@@ -134,9 +136,15 @@ public class HomeActivity extends AppCompatActivity {
                             Response<List<Transaction>> response
                     ) {
 
-                        System.out.println("API SUCCESS");
+                        if(response.isSuccessful()
+                                && response.body() != null){
 
-                        if(response.isSuccessful()){
+                            List<Transaction> apiList =
+                                    response.body();
+
+                            adapter = new TransactionAdapter(apiList);
+
+                            rvTransaction.setAdapter(adapter);
 
                             Toast.makeText(
                                     HomeActivity.this,
@@ -148,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
 
                             Toast.makeText(
                                     HomeActivity.this,
-                                    "Response Error: " + response.code(),
+                                    "No Data",
                                     Toast.LENGTH_LONG
                             ).show();
 
@@ -162,13 +170,13 @@ public class HomeActivity extends AppCompatActivity {
                             Throwable t
                     ) {
 
-                        System.out.println(t.getMessage());
-
                         Toast.makeText(
                                 HomeActivity.this,
                                 t.getMessage(),
                                 Toast.LENGTH_LONG
                         ).show();
+
+                        t.printStackTrace();
 
                     }
 
