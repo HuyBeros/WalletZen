@@ -3,80 +3,63 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-
-    app:cardCornerRadius="20dp"
-    app:cardElevation="6dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#EEEEEE">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:padding="16dp">
 
         <!-- ICON -->
-        <com.google.android.material.card.MaterialCardView
+
+        <TextView
+            android:id="@+id/txtIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:cardCornerRadius="16dp"
-            android:backgroundTint="#E8F5E9"
-            app:cardElevation="0dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="🍔"
-                android:gravity="center"
-                android:textSize="20sp"/>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- SPACE -->
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="wrap_content"/>
+            android:gravity="center"
+            android:text="🍴"
+            android:textSize="24sp"
+            android:background="#FFE9A8"/>
 
         <!-- INFO -->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
 
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Food"
-                android:textSize="16sp"
+                android:text="Ăn uống"
                 android:textStyle="bold"
-                android:textColor="#222"/>
-
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today"
-                android:textColor="#888888"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp"/>
+                android:textSize="16sp"
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
         <!-- AMOUNT -->
+
         <TextView
             android:id="@+id/txtAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-120,000 đ"
-            android:textColor="#E74C3C"
+            android:text="-50"
             android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:textSize="18sp"
+            android:textColor="#F44336"/>
 
     </LinearLayout>
 
