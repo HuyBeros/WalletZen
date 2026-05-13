@@ -15,9 +15,13 @@ public interface ApiService {
     @GET("transactions")
     Call<List<Transaction>> getTransactions();
 
+    @POST("transactions")
+    Call<Transaction> addTransaction(
+            @Body Transaction transaction
+    );
+
     @POST("api/login")
     Call<User> login(
             @Body User user
     );
-
 }

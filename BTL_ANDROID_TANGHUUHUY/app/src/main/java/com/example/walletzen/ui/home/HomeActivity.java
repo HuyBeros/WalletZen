@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +16,7 @@ import com.example.walletzen.network.RetrofitClient;
 import com.example.walletzen.ui.profile.ProfileActivity;
 import com.example.walletzen.ui.statistics.StatisticsActivity;
 import com.example.walletzen.ui.transaction.AddTransactionActivity;
-import com.example.walletzen.viewmodel.TransactionViewModel;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
 
     FloatingActionButton fabAdd;
 
-    TransactionViewModel viewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,26 +46,23 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
-        Toast.makeText(
-                this,
-                "Home Opened",
-                Toast.LENGTH_LONG
-        ).show();
+        rvTransaction =
+                findViewById(R.id.rvTransaction);
 
-        rvTransaction = findViewById(R.id.rvTransaction);
+        bottomNavigation =
+                findViewById(R.id.bottomNavigation);
 
-        bottomNavigation = findViewById(R.id.bottomNavigation);
-
-        fabAdd = findViewById(R.id.fabAdd);
+        fabAdd =
+                findViewById(R.id.fabAdd);
 
         list = new ArrayList<>();
 
-        viewModel = new ViewModelProvider(this)
-                .get(TransactionViewModel.class);
+        // ADAPTER
 
-        list = viewModel.getAllTransactions(this);
-
-        adapter = new TransactionAdapter(list);
+        adapter = new TransactionAdapter(
+                this,
+                list
+        );
 
         rvTransaction.setLayoutManager(
                 new LinearLayoutManager(this)
@@ -76,7 +70,15 @@ public class HomeActivity extends AppCompatActivity {
 
         rvTransaction.setAdapter(adapter);
 
-        bottomNavigation.setSelectedItemId(R.id.nav_home);
+        // LOAD DATA
+
+        loadTransactions();
+
+        // BOTTOM NAVIGATION
+
+        bottomNavigation.setSelectedItemId(
+                R.id.nav_home
+        );
 
         bottomNavigation.setOnItemSelectedListener(item -> {
 
@@ -84,7 +86,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 return true;
 
-            } else if(item.getItemId() == R.id.nav_statistics){
+            }
+            else if(item.getItemId()
+                    == R.id.nav_statistics){
 
                 startActivity(
                         new Intent(
@@ -95,7 +99,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 return true;
 
-            } else if(item.getItemId() == R.id.nav_profile){
+            }
+            else if(item.getItemId()
+                    == R.id.nav_profile){
 
                 startActivity(
                         new Intent(
@@ -111,6 +117,8 @@ public class HomeActivity extends AppCompatActivity {
 
         });
 
+        // FLOAT BUTTON
+
         fabAdd.setOnClickListener(v -> {
 
             startActivity(
@@ -121,6 +129,24 @@ public class HomeActivity extends AppCompatActivity {
             );
 
         });
+
+        overridePendingTransition(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+        );
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        loadTransactions();
+
+    }
+
+    private void loadTransactions(){
 
         ApiService apiService =
                 RetrofitClient
@@ -139,18 +165,11 @@ public class HomeActivity extends AppCompatActivity {
                         if(response.isSuccessful()
                                 && response.body() != null){
 
-                            List<Transaction> apiList =
-                                    response.body();
+                            list.clear();
 
-                            adapter = new TransactionAdapter(apiList);
+                            list.addAll(response.body());
 
-                            rvTransaction.setAdapter(adapter);
-
-                            Toast.makeText(
-                                    HomeActivity.this,
-                                    "API Success",
-                                    Toast.LENGTH_LONG
-                            ).show();
+                            adapter.notifyDataSetChanged();
 
                         }else{
 
@@ -175,8 +194,6 @@ public class HomeActivity extends AppCompatActivity {
                                 t.getMessage(),
                                 Toast.LENGTH_LONG
                         ).show();
-
-                        t.printStackTrace();
 
                     }
 
